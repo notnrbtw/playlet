@@ -56,10 +56,10 @@ process.on('uncaughtException', (error, origin) => {
         const packageFolder = path.dirname(packagePath)
 
         const options = {
-            host: config.ROKU_DEV_TARGET, || 10.0.0.100,
+            host: config.ROKU_DEV_TARGET, 
             packagePort: config.ROKU_DEV_TARGET_PORT || 80,
             telnetPort: config.ROKU_DEV_TARGET_TELNET_PORT || 8085,
-            password: config.ROKU_DEVPASSWORD, || 200527083,
+            password: config.ROKU_DEVPASSWORD, 
             outDir: packageFolder,
             outFile: packageFile,
             failOnCompileError: true,
