@@ -10,12 +10,13 @@ function Init() as void
     m.top.backgroundURI = ""
 
     m.loadingIndicator = m.top.findNode("LoadingIndicator")
-    m.global.addFields({
-        loadingIndicator: m.loadingIndicator
-    })
-
-    m.loadingIndicator.visible = true
-    m.loadingIndicator.message = GetLoadingMessage()
+    if m.loadingIndicator <> invalid
+        m.global.addFields({ loadingIndicator: m.loadingIndicator })
+        m.loadingIndicator.visible = true
+        m.loadingIndicator.message = GetLoadingMessage()
+    else
+        Logger.Log("BootstrapScene", "Warning: LoadingIndicator node not found")
+    end if
 
     m.playletLibUrls = GetPlayletLibUrls()
     m.playletLibUrlIndex = 0
@@ -69,6 +70,11 @@ function OnLoadStatusChanged() as void
         m.timer = invalid
         m.scene.playletLibLoadedUrl = libUrl
         container = m.scene.findNode("MainSceneContainer")
+        if container = invalid
+            Logger.Log("BootstrapScene", "Error: MainSceneContainer not found when Playlet lib loaded")
+            ShowPlayletLibLoadErrorDialog()
+            return
+        end if
         container.createChild("PlayletLib:MainScene")
         return
     end if

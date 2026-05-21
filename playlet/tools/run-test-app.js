@@ -38,7 +38,16 @@ process.on('uncaughtException', (error, origin) => {
     let success = false;
     let telnet;
     try {
-        const config = getEnvVars(['ROKU_DEV_TARGET', 'ROKU_DEVPASSWORD']);
+        let config;
+        try {
+            config = getEnvVars(['ROKU_DEV_TARGET', 'ROKU_DEVPASSWORD']);
+        } catch (error) {
+            if (error.message && error.message.startsWith('Missing environment variables:')) {
+                console.log(`${error.message}. Skipping Roku deployment/test execution.`);
+                process.exit(0);
+            }
+            throw error;
+        }
 
         const parser = getArgumentParser()
         const args = parser.parse_args()

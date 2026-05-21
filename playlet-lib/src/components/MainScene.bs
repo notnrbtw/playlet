@@ -5,13 +5,17 @@ import "pkg:/components/parts/AutoBind/OnNodeReadyNoOp.bs"
 import "pkg:/source/utils/LoadingScreen.bs"
 import "pkg:/source/utils/Locale.bs"
 
-function Init()
+function Init() as void
     m.scene = m.top.getScene()
     SetScenePalette(m.scene)
 
     ' At this point, the "MainScene" node is not yet added to the scene, and does not have a parent yet.
     ' Let's wait until it has one.
     m.MainSceneContainer = m.scene.findNode("MainSceneContainer")
+    if m.MainSceneContainer = invalid
+        print "MainScene: Error: MainSceneContainer node not found"
+        return
+    end if
     m.MainSceneContainer.ObserveField("change", FuncName(MainSceneContainerChanged))
 end function
 
@@ -35,7 +39,12 @@ end function
 
 const HAS_ANNOUNCEMENT = false
 
-function MainSceneContainerChanged()
+function MainSceneContainerChanged() as void
+    if m.MainSceneContainer = invalid
+        print "MainScene: Error: MainSceneContainer invalid when container changed"
+        return
+    end if
+
     AutoBindSceneGraph()
     StartWebServer()
     HideLoadingScreen()
@@ -50,15 +59,27 @@ function MainSceneContainerChanged()
     CopyLoadingMessagesToCache()
 end function
 
-function StartWebServer()
+function StartWebServer() as void
     m.loungeService = m.top.findNode("LoungeService")
-    m.loungeService@.StartService()
+    if m.loungeService <> invalid
+        m.loungeService@.StartService()
+    else
+        print "MainScene: Warning: LoungeService node not found"
+    end if
 
     m.webServer = m.top.findNode("WebServer")
-    m.webServer@.StartServer()
+    if m.webServer <> invalid
+        m.webServer@.StartServer()
+    else
+        print "MainScene: Warning: WebServer node not found"
+    end if
 
     m.dialServer = m.top.findNode("DialServer")
-    m.dialServer@.StartServer()
+    if m.dialServer <> invalid
+        m.dialServer@.StartServer()
+    else
+        print "MainScene: Warning: DialServer node not found"
+    end if
 end function
 
 function ShowAnnouncement() as boolean

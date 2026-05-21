@@ -13,13 +13,13 @@
   export let feed: any = undefined;
   let videos = [];
 
-  enum FeedLoadState {
-    None,
-    Loading,
-    Loaded,
-    LoadedPage,
-    Error,
-  }
+  const FeedLoadState = {
+    None: 0,
+    Loading: 1,
+    Loaded: 2,
+    LoadedPage: 3,
+    Error: 4,
+  };
 
   let feedLoadState = FeedLoadState.None;
   let feedSourcesIndex = 0;
@@ -45,7 +45,7 @@
         loadRow();
       }
     },
-    { threshold: [0] }
+    { threshold: [0] },
   );
 
   $: {
@@ -246,7 +246,7 @@
     }
 
     const existingPlaylistIds = new Set(
-      videos.map((video) => video.playlistId).filter((id) => id)
+      videos.map((video) => video.playlistId).filter((id) => id),
     );
 
     const newItems = items.filter((item) => {
