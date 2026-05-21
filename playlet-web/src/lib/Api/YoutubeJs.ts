@@ -145,6 +145,22 @@ export class YoutubeJs {
         };
     }
 
+    static applyDeviceSpoofing() {
+        const client = YoutubeJs.innerTube?.session?.context?.client;
+        if (!client) {
+            return;
+        }
+
+        client.platform = 'DESKTOP';
+        client.screenWidthPoints = 3840;
+        client.screenHeightPoints = 2160;
+        client.screenPixelDensity = 3;
+        client.screenDensityFloat = 3;
+        client.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36';
+        client.browserName = 'Chrome';
+        client.browserVersion = '125.0.0.0';
+    }
+
     static async generateVisitorData() {
         const innertube = await Innertube.create({ retrieve_player: false });
         const visitorData = innertube.session.context.client.visitorData;
@@ -237,9 +253,10 @@ export class YoutubeJs {
 
     static async getVideoInfo(videoId: string) {
         await YoutubeJs.initInnertube();
+        YoutubeJs.applyDeviceSpoofing();
 
         const info = await YoutubeJs.innerTube.getBasicInfo(videoId, {
-            client: 'TV',
+            client: 'WEB',
             po_token: await YoutubeJs.generatePoToken(videoId),
         });
 
@@ -334,6 +351,8 @@ export class YoutubeJs {
 
         if (format.quality_label) {
             result.qualityLabel = format.quality_label;
+        } else if (format.height) {
+            result.qualityLabel = `${format.height}p`;
         }
         if (format.fps) {
             result.fps = format.fps;
@@ -347,6 +366,8 @@ export class YoutubeJs {
         }
         if (format.height && format.width) {
             result.size = `${format.width}x${format.height}`;
+            result.resolution = `${format.height}p`;
+        } else if (format.height) {
             result.resolution = `${format.height}p`;
         }
 

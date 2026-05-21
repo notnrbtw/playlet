@@ -1148,7 +1148,7 @@ function OnQualityButtonSelected() as void
         return
     end if
 
-    qualityOptions = ["auto", "1080p", "720p", "480p", "360p", "240p", "144p"]
+    qualityOptions = ["auto", "2160p", "1440p", "1080p", "720p", "480p", "360p", "240p", "144p"]
 
     currentValue = ValidString(m.top.preferences["playback.preferred_quality"])
     if StringUtils.IsNullOrEmpty(currentValue)
