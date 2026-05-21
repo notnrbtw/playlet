@@ -121,6 +121,10 @@
 <div class="m-5">
   <div class={textSizes[level]}>{$translate(displayText)}</div>
   <div class="text-xs text-gray-500">{@html $translate(description)}</div>
+  <div class="text-xs text-gray-500 mt-2">
+    Higher resolutions may require desktop spoofing and may not be available for
+    all videos.
+  </div>
   <button class="btn m-1" on:click={openQualitySelector}>{displayValue}</button>
 </div>
 

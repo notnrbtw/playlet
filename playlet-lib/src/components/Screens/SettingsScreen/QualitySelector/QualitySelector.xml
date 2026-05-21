@@ -43,18 +43,29 @@
                 </ContentNode>
             </CheckList>
 
+            <Label
+                id="hintLabel"
+                text="Higher resolutions may require desktop spoofing and may not be available for all videos."
+                translation="[235,520]"
+                width="510"
+                height="60"
+                horizAlign="left"
+                vertAlign="top"
+                color="#CCCCCC"
+                wrap="true"
+                opacity="0.85" />
             <ButtonEx
                 id="saveButton"
                 iconVisible="false"
                 text="Save"
                 padding="[30,30]"
-                translation="[340,500]" />
+                translation="[340,560]" />
             <ButtonEx
                 id="closeButton"
                 iconVisible="false"
                 text="Close"
                 padding="[30,30]"
-                translation="[496,500]" />
+                translation="[496,560]" />
         </Rectangle>
     </children>
 </component>
